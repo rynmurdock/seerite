@@ -1,3 +1,5 @@
+# WIP 
+
 # seegit
 
 seegit is a package for tracing -- converting a git repo into a dataframe of diffs broken down by file -- and then rebuilding -- recreating files from the git repo edit-by-edit.
@@ -8,7 +10,9 @@ This can enable systematically tracking, visualizing, understanding edits & chan
 
 You can install the pip package by running:
 
-`python3 -m pip install seegit`
+`pip install pip -U`
+
+`pip install git+https://github.com/rynmurdock/seerite`
 
 or similar if you use uv/conda/etc.
 
