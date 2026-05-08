@@ -7,6 +7,7 @@ import shutil
 import tqdm
 import click
 import pandas as pd
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
 def is_new_blank_file(diff_text: str) -> bool:
@@ -31,11 +32,14 @@ def is_new_blank_file(diff_text: str) -> bool:
     # A blank file should have no added lines of content
     return len(content_lines) == 0
 
-def read_diffs_from_parquet(csv_path, ):
-    diffs = pd.read_parquet(csv_path, ).to_dict()
+def read_diffs_from_parquet(path, ):
+    # k: commit number; v: list of all files' commits
+    diffs = pd.read_parquet(path, ).to_dict()
     return diffs
 
-def rebuild_file_from_diffs(file, diffs, initial_text=""):
+def rebuild_file_from_diffs(file: str, 
+                            diffs: list, 
+                            initial_text: str=""):
     # we avoid the tempfile lib here (& not elsewhere) as this file is 
     #     apt to handle many diffs & it can break if someone were to use parallelism
 
@@ -53,15 +57,11 @@ def rebuild_file_from_diffs(file, diffs, initial_text=""):
 
         for i, entry in tqdm.tqdm(enumerate(diffs), disable=True):
             entry = entry.decode('utf-8') if not isinstance(entry, str) else entry
-            if not 'new file mode' in entry:
-                to_make = [file]
-                if '--git' in entry:
-                    to_make += entry.split('--git')[1].split(' ')[:2]
-                for word in to_make:
-                    path = os.path.join(tempdir, word.replace('a/', '').replace('b/', ''))
-                    with open(path, 'a') as file:
-                        pass
-                    assert os.path.exists(path), f'{path} does not exist!'
+            path = os.path.join(tempdir, file)
+            with open(path, 'a') as ff:
+                pass
+            assert os.path.isfile(path), f'{path} is not a file/extant!'
+
 
             # create a new temp_dir for the patch file; we don't want to clog the "repo"
             patch_file_tempdir = f"./temp/{uuid.uuid4()}"
@@ -69,9 +69,9 @@ def rebuild_file_from_diffs(file, diffs, initial_text=""):
             try:
                 assert os.path.exists(patch_file_tempdir)
                 patch_file = os.path.join(patch_file_tempdir, f"patch_{i}.diff")
-                with open(patch_file, "w", encoding='utf-8') as file:
+                with open(patch_file, "w", encoding='utf-8') as ff:
                     # Write the string to the file
-                    file.write(entry)
+                    ff.write(entry)
                 
                 if not os.path.exists(patch_file) or not os.path.getsize(patch_file):
                     logging.warning('We have an empty or non-existent diff patch file made in rebuild_file_from_diffs!')
@@ -117,6 +117,18 @@ def rebuild_file_from_diffs(file, diffs, initial_text=""):
         shutil.rmtree(tempdir, ignore_errors=True)
     return outcome
 
+def filter_diffs_by_file(file: str, 
+                         diffs_dict: dict) -> list:
+    # we flatten, decode, & filter our diffs
+    filtered_diffs = []
+    for diff_number, diffs in diffs_dict.items():
+        for diff_filepath, diff_patch in diffs.items():
+            # our diffs are encoded, not str.
+            if diff_filepath == file:
+                filtered_diffs.append(diff_patch.decode() 
+                                        if not isinstance(diff_patch, str) else diff_patch)
+    logging.info(file, filtered_diffs)
+    return filtered_diffs
 
 
 @click.command()
@@ -124,6 +136,7 @@ def rebuild_file_from_diffs(file, diffs, initial_text=""):
 @click.option('--file', required=True, help='The path of the file to rebuild, relative to the git directory.')
 def main(file, input_path):
     diffs = read_diffs_from_parquet(input_path,)
+    diffs = filter_diffs_by_file(file, diffs)
     if not diffs:
         logging.error(f"No diffs found in {input_path}!")
     else:

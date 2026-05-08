@@ -6,6 +6,7 @@ import tempfile
 import tqdm
 import click
 import pandas as pd
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
 def run_git_command(args):
@@ -106,6 +107,7 @@ def main(branch, output_path, suffix_of_interest):
             # skip files that don't have a suffix if given; 
             #     e.g. if we just wanted changes to latex source files.
             if suffix_of_interest and not file.endswith(suffix_of_interest):
+                logging.info(f"skipping {file} as it doesn't end with {suffix_of_interest}")
                 continue
             file_diff = get_file_diff(prev_commit, current_commit, file, branch).encode('utf-8')
             
