@@ -88,7 +88,7 @@ def get_file_diff(prev_commit, current_commit, filename, branch):
 @click.option('--output_path', default="./git_diffs_by_file.parquet", help='The path of your output dataframe parquet file.')
 @click.option('--suffix_of_interest', default=None, help='The suffix of filepaths that you would like to collect diffs for; all others non-matching paths will be excluded.')
 def main(branch, output_path, suffix_of_interest):
-    commits = get_commit_list()
+    commits = get_commit_list(branch)
     logging.info(f'Commits: {commits}')
 
     full_files_diffs = {}
