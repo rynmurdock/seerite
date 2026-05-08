@@ -1,0 +1,14 @@
+[project]
+name = "seegit"
+version = "0.1.0"
+description = "Systematically organize the changes you've made to a git repo with seegit"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas",
+    "tqdm",
+    "click",
+]
+[project.scripts]
+seegit-trace = "git_trace:main"
+seegit-rebuild = "git_rebuild:main"
