@@ -8,6 +8,7 @@ dependencies = [
     "pandas",
     "tqdm",
     "click",
+    "pyarrow",
 ]
 [project.scripts]
 seegit-trace = "git_trace:main"
