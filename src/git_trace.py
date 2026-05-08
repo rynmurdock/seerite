@@ -23,7 +23,7 @@ def get_commit_metadata(commit_hash, branch):
     return author, date
 
 def get_diff_stats(prev_commit, current_commit):
-    stats_output = run_git_command(["diff", "--numstat", 
+    stats_output = run_git_command(["diff", "--numstat",
                                     f"{prev_commit}..{current_commit}",])
     files = []
     for line in stats_output.splitlines():
@@ -89,7 +89,7 @@ def get_file_diff(prev_commit, current_commit, filename, branch):
 @click.option('--output_path', default="./git_diffs_by_file.parquet", help='The path of your output dataframe parquet file.')
 @click.option('--suffix_of_interest', default=None, help='The suffix of filepaths that you would like to collect diffs for; all others non-matching paths will be excluded.')
 def main(branch, output_path, suffix_of_interest):
-    commits = get_commit_list(branch)
+    commits = ['4b825dc642cb6eb9a060e54bf8d69288fbee4904'] + get_commit_list(branch)
     logging.info(f'Commits: {commits}')
 
     full_files_diffs = {}
@@ -99,7 +99,9 @@ def main(branch, output_path, suffix_of_interest):
         current_commit = commits[i]
 
         # we don't utilize lots of available metadata for now
-        author, date = get_commit_metadata(current_commit, branch)
+        # author, date = get_commit_metadata(current_commit, branch)
+
+        # this may under-report diffs
         diff_stats = get_diff_stats(prev_commit, current_commit)
 
         # go through each file change in this diff

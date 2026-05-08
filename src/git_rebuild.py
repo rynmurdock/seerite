@@ -57,11 +57,6 @@ def rebuild_file_from_diffs(file: str,
 
         for i, entry in tqdm.tqdm(enumerate(diffs), disable=True):
             entry = entry.decode('utf-8') if not isinstance(entry, str) else entry
-            path = os.path.join(tempdir, file)
-            with open(path, 'a') as ff:
-                pass
-            assert os.path.isfile(path), f'{path} is not a file/extant!'
-
 
             # create a new temp_dir for the patch file; we don't want to clog the "repo"
             patch_file_tempdir = f"./temp/{uuid.uuid4()}"
@@ -107,12 +102,9 @@ def rebuild_file_from_diffs(file: str,
             return False
 
         # TODO doesn't need to be a list when we target a single file.
-        result_f = reversed([f for f in in_folder if f == file])
-        for file in result_f:
-            with open(file) as f:
-                outcome = f.read()
-            if isinstance(outcome, str):
-                break
+        result_f = os.path.join(tempdir, file)
+        with open(result_f) as f:
+            outcome = f.read()
     finally:
         shutil.rmtree(tempdir, ignore_errors=True)
     return outcome
@@ -127,7 +119,7 @@ def filter_diffs_by_file(file: str,
             if diff_filepath == file:
                 filtered_diffs.append(diff_patch.decode() 
                                         if not isinstance(diff_patch, str) else diff_patch)
-    logging.info(file, filtered_diffs)
+    logging.debug(f'{file} {filtered_diffs}')
     return filtered_diffs
 
 
