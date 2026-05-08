@@ -54,7 +54,7 @@ def test_diff_reconstruction():
     diffs = [list(v.values())[0] for v in diffs.values()]
 
     logging.info(diffs)
-    outcome = git_rebuild.rebuild_file_from_diffs(branch, diffs)
+    outcome = git_rebuild.rebuild_file_from_diffs('LICENSE', diffs)
     logging.info(outcome)
 
     assert current_draft_test == outcome, f'We failed to reconstruct 1:1. current_draft_test={current_draft_test} reconstruction={outcome}'

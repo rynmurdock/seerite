@@ -121,12 +121,13 @@ def rebuild_file_from_diffs(file, diffs, initial_text=""):
 
 @click.command()
 @click.option('--input_path', required=True, help='The name of your diffs file.')
-def main(input_path):
+@click.option('--file', required=True, help='The path of the file to rebuild, relative to the git directory.')
+def main(file, input_path):
     diffs = read_diffs_from_parquet(input_path,)
     if not diffs:
         logging.error(f"No diffs found in {input_path}!")
     else:
-        success = rebuild_file_from_diffs(diffs,)
+        success = rebuild_file_from_diffs(file, diffs,)
         if success:
             logging.info("File reconstruction complete.")
 
