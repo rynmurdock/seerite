@@ -1,7 +1,6 @@
 
-
-- Allow for restoring files to different points in their edit history.
-- Upload package to pypi
-- verify the install
+- GUI for restoring files based on parquet
+- [Optional] Upload package to pypi
+- verify the install from pip works
 
 

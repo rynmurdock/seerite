@@ -10,8 +10,6 @@ This can enable systematically tracking, visualizing, understanding edits & chan
 
 You can install the pip package by running:
 
-`pip install pip -U`
-
 `pip install git+https://github.com/rynmurdock/seerite`
 
 or similar if you use uv/conda/etc.
