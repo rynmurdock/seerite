@@ -2,9 +2,9 @@
 
 # seegit
 
-seegit is a package for tracing -- converting a git repo into a dataframe of diffs broken down by file -- and then rebuilding -- recreating files from the git repo edit-by-edit.
+seegit is a package for "tracing" -- converting a git repo into a dataframe of diffs broken down by file -- and then "rebuilding" -- recreating files from the git repo edit-by-edit to a selected point in their history.
 
-This can enable systematically tracking, visualizing, understanding edits & changes over a set of files.
+This can enable systematically tracking, visualizing, & understanding edits & changes over a set of files.
 
 ## Quickstart
 
@@ -14,21 +14,28 @@ You can install the pip package by running:
 
 or similar if you use uv/conda/etc.
 
-And then within your repo run:
+And then within your git repo run:
 
 ```
 seegit-trace --branch <your branch> --output_path './diffs.parquet' --suffix_of_interest '.tex'
 ```
+
 to save your git diffs to a parquet file.
 
-and
+and then
 
 ```
-seegit-rebuild --input_path './diffs.parquet'
+seegit-rebuild --input_path './diffs.parquet' --gui
 ```
 
-If you'd like to seegit this for tracking your edits to your work for visualization, understanding, modeling, then we recommended that you use dura (https://github.com/tkellogg/dura/) along with auto-saving in whatever editor you prefer.
+to select your file & your diff to rebuild to. 
 
-seegit is written in such a way as to allow for incorrect or approximately incorrect patches/diffs while raising warnings to facilitate modeling.
+We also have many useful functions you can use outside of these canonical tools.
+
+If you'd like to use seegit for tracking edits moment-by-moment to your files for visualization, understanding, modeling, then we recommended that you use dura (https://github.com/tkellogg/dura/) along with auto-saving in whatever editor you prefer.
+
+
+
+Notably, seegit is written in such a way as to allow for incorrect or approximately incorrect patches/diffs while raising warnings -- this is done to facilitate modeling use cases.
 
 
