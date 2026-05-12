@@ -1,5 +1,3 @@
-# WIP 
-
 # seegit
 
 seegit is a package for "tracing" -- converting a git repo into a dataframe of diffs broken down by file -- and then "rebuilding" -- recreating files from the git repo edit-by-edit to a selected point in their history.
@@ -17,7 +15,7 @@ or similar if you use uv/conda/etc.
 And then within your git repo run:
 
 ```
-seegit-trace --branch <your branch> --output_path './diffs.parquet' --suffix_of_interest '.tex'
+seegit-trace --branch <your branch> --output_path './diffs.parquet' --suffix_of_interest '<trace only files that end with this string>'
 ```
 
 to save your git diffs to a parquet file.
