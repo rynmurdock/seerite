@@ -28,7 +28,8 @@ And then
 seegit-rebuild --input_path './diffs.parquet' --gui
 ```
 
-to interactively select your file & your diff to rebuild.
+to interactively select your file & your diff to rebuild. Use `--help` to see more 
+options you can use with these commands.
 
 ## Additional Notes
 
