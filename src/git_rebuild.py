@@ -219,10 +219,10 @@ def main(file, input_path, until, gui):
         diffs = filter_diffs_by_file(file, diffs)
     if gui:
         print(list(diffs_df.index))
-        file = select_from_list(list(diffs_df.index), title="Select your file to reconstruct")
+        file = select_from_list(list(diffs_df.index), title="Select the file to reconstruct")
         diffs = filter_diffs_by_file(file, diffs)
         until = select_from_list([f for f in list(diffs_df.loc[file]) if f], 
-                                 title='Select your diff to load.', return_index=True)
+                                 title='Select the diff to rebuild this file up to', return_index=True)
     if not diffs:
         logging.error(f"No diffs found in {input_path}!")
     else:
