@@ -30,10 +30,11 @@ seegit-rebuild --input_path './diffs.parquet' --gui
 
 to interactively select your file & your diff to rebuild.
 
+## Additional Notes
+
 We also have many useful functions you can use outside of these canonical tools. (To be documented; you can explore yourself for now.)
 
 If you'd like to use seegit for tracking edits moment-by-moment to your files for visualization, understanding, modeling, then we recommend you use dura (https://github.com/tkellogg/dura/) along with auto-saving in whatever editor you prefer. dura can commit your auto-saved changes automatically in the background, which seegit can then trace.
-
 
 Notably, seegit is written in such a way as to allow for incorrect or approximately incorrect patches/diffs while raising warnings -- this is done to facilitate modeling use cases.
 
